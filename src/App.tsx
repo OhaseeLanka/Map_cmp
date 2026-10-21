@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
-import { HashRouter, Route, Routes } from "react-router-dom";
+import { HashRouter, Route, Routes, useNavigate, useSearchParams } from "react-router-dom";
 import MapView, { type PopulationDetails, type RoadDetails } from "./MapView";
+import { EvacuationActionButton, type EvacuationActionPayload } from "./EvacuationActionButton";
 import { TIERS, TIER_COLORS } from "./tokens";
 import { parseFloodPriorityCollection, parseRiskCollection } from "./data";
 import type { DataLoadState, FloodPriorityCollection, FloodPriorityProperties, Hazard, LayerMode, RiskCollection, RiskFeature, RiskFilters, RiskProps, VisualizationMode } from "./types";
@@ -209,6 +210,7 @@ function MapDashboard() {
   const [shareMessage, setShareMessage] = useState<string | null>(null);
   const [filters, setFilters] = useState<RiskFilters>({ minScore: 0, maxScore: 1, tiers: [...TIERS], query: "" });
   const [floodHistory, setFloodHistory] = useState<FloodHistoryRow[]>([]);
+  const navigate = useNavigate();
   const [historyError, setHistoryError] = useState<string | null>(null);
   const [floodDate, setFloodDate] = useState("");
 
@@ -496,7 +498,29 @@ function MapDashboard() {
           })()}
           {assessmentTab === "infrastructure" && <div className="tab-empty"><strong>Infrastructure risk</strong><p>Hospitals, schools, bridges, and shelters at risk will appear here when infrastructure data is supplied.</p><span>Awaiting infrastructure dataset</span></div>}
           {assessmentTab === "explainability" && <div className="tab-empty"><strong>Explainable prediction</strong><p>Historical impact comparisons and SHAP factor contributions will appear here when model explanation output is available.</p><span>Awaiting model explanation output</span></div>}
-          {assessmentTab === "actions" && <div className="tab-empty"><strong>Decision support</strong><p>Preliminary recommendations will be shown here after the underlying exposure and infrastructure evidence is verified.</p><span>Not an operational recommendation</span></div>}
+          {assessmentTab === "actions" && (
+            <div className="tab-empty">
+              <strong>Decision support</strong>
+              <p>Review the selected flood priority area in a focused evacuation route view that highlights the relevant road network.</p>
+              {selectedFloodPriority ? (
+                <EvacuationActionButton
+                  areaName={selectedFloodPriority.boundary_name}
+                  district={selectedFloodPriority.District}
+                  division={selectedFloodPriority.Division}
+                  onNavigate={({ areaName, district, division }) => {
+                    const params = new URLSearchParams({
+                      area: areaName,
+                      district,
+                      division,
+                    });
+                    navigate(`/evacuation?${params.toString()}`);
+                  }}
+                />
+              ) : (
+                <span>Select a flood priority area to enable evacuation routing.</span>
+              )}
+            </div>
+          )}
         </aside>
       )}
 
@@ -529,12 +553,120 @@ function MapDashboard() {
   );
 }
 
+function EvacuationMapPage() {
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
+  const areaName = searchParams.get("area") ?? "Selected priority area";
+  const district = searchParams.get("district") ?? "District";
+  const division = searchParams.get("division") ?? "Division";
+  const landslideState = useGeoJSON("landslide_real.geojson");
+  const floodState = useGeoJSON("flood_real.geojson");
+  const floodPriorityState = useFloodPriority();
+  const populationAreasState = usePopulationAreas();
+  const [roads, setRoads] = useState(true);
+  const [population, setPopulation] = useState(false);
+  const [selectedFloodPriority, setSelectedFloodPriority] = useState<FloodPriorityCollection["features"][number]["properties"] | null>(null);
+
+  const floodPriority = floodPriorityState.data;
+  const landslide = landslideState.data;
+  const flood = floodState.data;
+  const selectedArea = useMemo(() => {
+    if (!floodPriority) return null;
+    const target = areaName.trim();
+    return floodPriority.features.find((feature) =>
+      normalizeAreaName(feature.properties.boundary_name) === normalizeAreaName(target)
+      || (
+        normalizeAreaName(feature.properties.District) === normalizeAreaName(district)
+        && normalizeAreaName(feature.properties.Division) === normalizeAreaName(division)
+      )
+    )?.properties ?? null;
+  }, [areaName, district, division, floodPriority]);
+
+  useEffect(() => {
+    if (!selectedArea && floodPriority) {
+      const fallback = floodPriority.features.find((feature) =>
+        normalizeAreaName(feature.properties.District) === normalizeAreaName(district)
+        && normalizeAreaName(feature.properties.Division) === normalizeAreaName(division)
+      );
+      if (fallback) setSelectedFloodPriority(fallback.properties);
+    } else {
+      setSelectedFloodPriority(selectedArea);
+    }
+  }, [district, division, floodPriority, selectedArea]);
+
+  return (
+    <div className="app" lang="en">
+      <MapView
+        landslide={landslide}
+        flood={flood}
+        floodPriority={floodPriority}
+        selectedFloodPriorityName={selectedFloodPriority?.boundary_name ?? null}
+        mode="both"
+        visualization="emergency"
+        terrain={false}
+        contours={false}
+        roads={roads}
+        population={population}
+        selectedId={null}
+        onSelect={() => {}}
+        onRoadSelect={() => {}}
+        onPopulationSelect={() => {}}
+        onFloodPrioritySelect={(area) => setSelectedFloodPriority(area)}
+      />
+
+      <header className="topbar card">
+        <div className="brand">
+          <span className="eyebrow">EVACUATION ROUTE VIEW</span>
+          <strong>{selectedFloodPriority?.boundary_name ?? areaName}</strong>
+        </div>
+        <div className="top-stats">
+          <span><b>{district}</b> district</span>
+          <span>{division} division</span>
+        </div>
+        <div className="map-actions" aria-label="Evacuation actions">
+          <button onClick={() => navigate(-1)}>Back to map</button>
+        </div>
+      </header>
+
+      <aside className="left card" aria-label="Evacuation context controls">
+        <h3>Evacuation context</h3>
+        <p className="note">Focused review for {selectedFloodPriority?.boundary_name ?? areaName}. The map keeps the road layer active so the nearest access routes remain visible.</p>
+        <label className="field"><input type="checkbox" checked={roads} onChange={(event) => setRoads(event.target.checked)} /> Relevant roads</label>
+        <label className="field"><input type="checkbox" checked={population} onChange={(event) => setPopulation(event.target.checked)} /> Population exposure</label>
+        <div className="impact-summary">
+          <span>ROUTE FOCUS</span>
+          <div className="impact-summary-grid">
+            <strong>{district}<small>District</small></strong>
+            <strong>{division}<small>Division</small></strong>
+            <strong>{selectedFloodPriority?.priority_level ?? "—"}<small>Priority</small></strong>
+          </div>
+        </div>
+      </aside>
+
+      <aside className="right card flood-priority-details" aria-live="polite">
+        <span className="assessment-kicker">EVACUATION REVIEW</span>
+        <h3>{selectedFloodPriority?.boundary_name ?? areaName}</h3>
+        <p className="note">{district} · {division}</p>
+        <dl>
+          <dt>Priority score</dt><dd>{selectedFloodPriority?.priority_score.toFixed(2) ?? "—"}</dd>
+          <dt>Scenario</dt><dd>{selectedFloodPriority?.scenario_type ?? "—"}</dd>
+          <dt>Verification</dt><dd>{selectedFloodPriority?.verification_status ?? "—"}</dd>
+        </dl>
+        <p className="assessment-disclaimer">This route map is intended to support rapid evacuation planning around the selected flood-priority area. It is a decision-support view, not a final operational routing plan.</p>
+      </aside>
+
+      {populationAreasState.error && <div className="error-banner" role="alert">{populationAreasState.error}</div>}
+    </div>
+  );
+}
+
 export default function App() {
   return (
     <HashRouter>
       <Routes>
         <Route path="/" element={<ResearchLandingPage />} />
         <Route path="/map" element={<MapDashboard />} />
+        <Route path="/evacuation" element={<EvacuationMapPage />} />
       </Routes>
     </HashRouter>
   );

@@ -1,0 +1,527 @@
+{
+  "built_at_utc": "2026-10-18T10:57:27.191519+00:00",
+  "closure_nearest_candidate_review_meters": 50,
+  "database": "dual_route",
+  "hard_block_policy": "Flood/landslide intersections and closed road/bridge closures; closure and hazard evidence must overlap the scenario event window.",
+  "hazard_source_coverage": [
+    {
+      "hazard_type": "flood",
+      "polygons_intersecting_roads": 40,
+      "source_polygon_count": 40
+    },
+    {
+      "hazard_type": "landslide",
+      "polygons_intersecting_roads": 31,
+      "source_polygon_count": 70
+    }
+  ],
+  "host": "127.0.0.1",
+  "incident_snap_buffer_meters": 50,
+  "match_counts": {
+    "closure_nearest_edge_candidates": 90,
+    "closures_with_intersecting_edges": 42,
+    "edge_closure_matches": 118,
+    "edge_hazard_matches": 5324,
+    "edge_lhmp_matches": 160951,
+    "edge_static_risk": 153791,
+    "expected_scenario_status_rows": 3998566,
+    "incident_edge_matches": 2156,
+    "incidents_over_50m": 1219,
+    "incidents_within_50m": 937,
+    "invalid_scenario_tier_rows": 0,
+    "scenario_status_rows": 3998566,
+    "source_closures": 90,
+    "unmatched_closures_over_50m_from_nearest_edge": 38,
+    "unmatched_closures_with_nearest_edge_within_50m": 10
+  },
+  "outputs": {
+    "closure_nearest_candidates": "Nearest-edge candidates are diagnostic only. They do not create closure matches or blocks unless the closure geometry intersects the edge.",
+    "open_edge_representation": "Every edge/scenario pair appears in edge_scenario_status; open rows are explicit.",
+    "tables": [
+      "edge_hazard_matches",
+      "edge_closure_matches",
+      "closure_nearest_edge",
+      "edge_lhmp_matches",
+      "incident_edge_matches",
+      "edge_static_risk"
+    ],
+    "view": "edge_scenario_status"
+  },
+  "port": 55432,
+  "scenario_input_coverage": [
+    {
+      "closure_count": 3,
+      "district": "Badulla",
+      "evacuation_origin_count": 14,
+      "event_id": "EV-BDL-F1",
+      "hazard_polygon_count": 3,
+      "hazard_type": "flood",
+      "linked_incident_count": 0,
+      "scenario_id": "SC-BDL-F1"
+    },
+    {
+      "closure_count": 6,
+      "district": "Badulla",
+      "evacuation_origin_count": 28,
+      "event_id": "EV-BDL-F2",
+      "hazard_polygon_count": 5,
+      "hazard_type": "flood",
+      "linked_incident_count": 0,
+      "scenario_id": "SC-BDL-F2"
+    },
+    {
+      "closure_count": 0,
+      "district": "Badulla",
+      "evacuation_origin_count": 0,
+      "event_id": "EV-BDL-HIST",
+      "hazard_polygon_count": 0,
+      "hazard_type": "landslide",
+      "linked_incident_count": 235,
+      "scenario_id": "SC-BDL-HIST"
+    },
+    {
+      "closure_count": 3,
+      "district": "Badulla",
+      "evacuation_origin_count": 14,
+      "event_id": "EV-BDL-L1",
+      "hazard_polygon_count": 5,
+      "hazard_type": "landslide",
+      "linked_incident_count": 0,
+      "scenario_id": "SC-BDL-L1"
+    },
+    {
+      "closure_count": 6,
+      "district": "Badulla",
+      "evacuation_origin_count": 28,
+      "event_id": "EV-BDL-L2",
+      "hazard_polygon_count": 9,
+      "hazard_type": "landslide",
+      "linked_incident_count": 0,
+      "scenario_id": "SC-BDL-L2"
+    },
+    {
+      "closure_count": 3,
+      "district": "Kegalle",
+      "evacuation_origin_count": 14,
+      "event_id": "EV-KEG-F1",
+      "hazard_polygon_count": 3,
+      "hazard_type": "flood",
+      "linked_incident_count": 0,
+      "scenario_id": "SC-KEG-F1"
+    },
+    {
+      "closure_count": 6,
+      "district": "Kegalle",
+      "evacuation_origin_count": 28,
+      "event_id": "EV-KEG-F2",
+      "hazard_polygon_count": 5,
+      "hazard_type": "flood",
+      "linked_incident_count": 0,
+      "scenario_id": "SC-KEG-F2"
+    },
+    {
+      "closure_count": 0,
+      "district": "Kegalle",
+      "evacuation_origin_count": 0,
+      "event_id": "EV-KEG-HIST",
+      "hazard_polygon_count": 0,
+      "hazard_type": "landslide",
+      "linked_incident_count": 236,
+      "scenario_id": "SC-KEG-HIST"
+    },
+    {
+      "closure_count": 3,
+      "district": "Kegalle",
+      "evacuation_origin_count": 14,
+      "event_id": "EV-KEG-L1",
+      "hazard_polygon_count": 5,
+      "hazard_type": "landslide",
+      "linked_incident_count": 0,
+      "scenario_id": "SC-KEG-L1"
+    },
+    {
+      "closure_count": 6,
+      "district": "Kegalle",
+      "evacuation_origin_count": 28,
+      "event_id": "EV-KEG-L2",
+      "hazard_polygon_count": 9,
+      "hazard_type": "landslide",
+      "linked_incident_count": 0,
+      "scenario_id": "SC-KEG-L2"
+    },
+    {
+      "closure_count": 3,
+      "district": "Kalutara",
+      "evacuation_origin_count": 14,
+      "event_id": "EV-KLT-F1",
+      "hazard_polygon_count": 3,
+      "hazard_type": "flood",
+      "linked_incident_count": 0,
+      "scenario_id": "SC-KLT-F1"
+    },
+    {
+      "closure_count": 6,
+      "district": "Kalutara",
+      "evacuation_origin_count": 28,
+      "event_id": "EV-KLT-F2",
+      "hazard_polygon_count": 5,
+      "hazard_type": "flood",
+      "linked_incident_count": 0,
+      "scenario_id": "SC-KLT-F2"
+    },
+    {
+      "closure_count": 0,
+      "district": "Kalutara",
+      "evacuation_origin_count": 0,
+      "event_id": "EV-KLT-HIST",
+      "hazard_polygon_count": 0,
+      "hazard_type": "landslide",
+      "linked_incident_count": 240,
+      "scenario_id": "SC-KLT-HIST"
+    },
+    {
+      "closure_count": 3,
+      "district": "Kalutara",
+      "evacuation_origin_count": 14,
+      "event_id": "EV-KLT-L1",
+      "hazard_polygon_count": 5,
+      "hazard_type": "landslide",
+      "linked_incident_count": 0,
+      "scenario_id": "SC-KLT-L1"
+    },
+    {
+      "closure_count": 6,
+      "district": "Kalutara",
+      "evacuation_origin_count": 28,
+      "event_id": "EV-KLT-L2",
+      "hazard_polygon_count": 9,
+      "hazard_type": "landslide",
+      "linked_incident_count": 0,
+      "scenario_id": "SC-KLT-L2"
+    },
+    {
+      "closure_count": 0,
+      "district": "Nuwara Eliya",
+      "evacuation_origin_count": 507,
+      "event_id": "EV-NWE-DIT",
+      "hazard_polygon_count": 0,
+      "hazard_type": "landslide",
+      "linked_incident_count": 0,
+      "scenario_id": "SC-NWE-DIT"
+    },
+    {
+      "closure_count": 3,
+      "district": "Nuwara Eliya",
+      "evacuation_origin_count": 14,
+      "event_id": "EV-NWE-F1",
+      "hazard_polygon_count": 3,
+      "hazard_type": "flood",
+      "linked_incident_count": 0,
+      "scenario_id": "SC-NWE-F1"
+    },
+    {
+      "closure_count": 6,
+      "district": "Nuwara Eliya",
+      "evacuation_origin_count": 28,
+      "event_id": "EV-NWE-F2",
+      "hazard_polygon_count": 5,
+      "hazard_type": "flood",
+      "linked_incident_count": 0,
+      "scenario_id": "SC-NWE-F2"
+    },
+    {
+      "closure_count": 0,
+      "district": "Nuwara Eliya",
+      "evacuation_origin_count": 0,
+      "event_id": "EV-NWE-HIST",
+      "hazard_polygon_count": 0,
+      "hazard_type": "landslide",
+      "linked_incident_count": 1205,
+      "scenario_id": "SC-NWE-HIST"
+    },
+    {
+      "closure_count": 3,
+      "district": "Nuwara Eliya",
+      "evacuation_origin_count": 14,
+      "event_id": "EV-NWE-L1",
+      "hazard_polygon_count": 5,
+      "hazard_type": "landslide",
+      "linked_incident_count": 0,
+      "scenario_id": "SC-NWE-L1"
+    },
+    {
+      "closure_count": 6,
+      "district": "Nuwara Eliya",
+      "evacuation_origin_count": 28,
+      "event_id": "EV-NWE-L2",
+      "hazard_polygon_count": 9,
+      "hazard_type": "landslide",
+      "linked_incident_count": 0,
+      "scenario_id": "SC-NWE-L2"
+    },
+    {
+      "closure_count": 3,
+      "district": "Ratnapura",
+      "evacuation_origin_count": 14,
+      "event_id": "EV-RTN-F1",
+      "hazard_polygon_count": 3,
+      "hazard_type": "flood",
+      "linked_incident_count": 0,
+      "scenario_id": "SC-RTN-F1"
+    },
+    {
+      "closure_count": 6,
+      "district": "Ratnapura",
+      "evacuation_origin_count": 28,
+      "event_id": "EV-RTN-F2",
+      "hazard_polygon_count": 5,
+      "hazard_type": "flood",
+      "linked_incident_count": 0,
+      "scenario_id": "SC-RTN-F2"
+    },
+    {
+      "closure_count": 0,
+      "district": "Ratnapura",
+      "evacuation_origin_count": 0,
+      "event_id": "EV-RTN-HIST",
+      "hazard_polygon_count": 0,
+      "hazard_type": "landslide",
+      "linked_incident_count": 240,
+      "scenario_id": "SC-RTN-HIST"
+    },
+    {
+      "closure_count": 3,
+      "district": "Ratnapura",
+      "evacuation_origin_count": 14,
+      "event_id": "EV-RTN-L1",
+      "hazard_polygon_count": 5,
+      "hazard_type": "landslide",
+      "linked_incident_count": 0,
+      "scenario_id": "SC-RTN-L1"
+    },
+    {
+      "closure_count": 6,
+      "district": "Ratnapura",
+      "evacuation_origin_count": 28,
+      "event_id": "EV-RTN-L2",
+      "hazard_polygon_count": 9,
+      "hazard_type": "landslide",
+      "linked_incident_count": 0,
+      "scenario_id": "SC-RTN-L2"
+    }
+  ],
+  "scenario_status_counts": [
+    {
+      "hard_blocked_edges": 312,
+      "open_edges": 112247,
+      "scenario_district": "Badulla",
+      "scenario_hazard_type": "flood",
+      "scenario_id": "SC-BDL-F1",
+      "soft_penalty_edges": 41232
+    },
+    {
+      "hard_blocked_edges": 485,
+      "open_edges": 112114,
+      "scenario_district": "Badulla",
+      "scenario_hazard_type": "flood",
+      "scenario_id": "SC-BDL-F2",
+      "soft_penalty_edges": 41192
+    },
+    {
+      "hard_blocked_edges": 0,
+      "open_edges": 112557,
+      "scenario_district": "Badulla",
+      "scenario_hazard_type": "landslide",
+      "scenario_id": "SC-BDL-HIST",
+      "soft_penalty_edges": 41234
+    },
+    {
+      "hard_blocked_edges": 12,
+      "open_edges": 112557,
+      "scenario_district": "Badulla",
+      "scenario_hazard_type": "landslide",
+      "scenario_id": "SC-BDL-L1",
+      "soft_penalty_edges": 41222
+    },
+    {
+      "hard_blocked_edges": 14,
+      "open_edges": 112555,
+      "scenario_district": "Badulla",
+      "scenario_hazard_type": "landslide",
+      "scenario_id": "SC-BDL-L2",
+      "soft_penalty_edges": 41222
+    },
+    {
+      "hard_blocked_edges": 441,
+      "open_edges": 112301,
+      "scenario_district": "Kegalle",
+      "scenario_hazard_type": "flood",
+      "scenario_id": "SC-KEG-F1",
+      "soft_penalty_edges": 41049
+    },
+    {
+      "hard_blocked_edges": 582,
+      "open_edges": 112316,
+      "scenario_district": "Kegalle",
+      "scenario_hazard_type": "flood",
+      "scenario_id": "SC-KEG-F2",
+      "soft_penalty_edges": 40893
+    },
+    {
+      "hard_blocked_edges": 0,
+      "open_edges": 112557,
+      "scenario_district": "Kegalle",
+      "scenario_hazard_type": "landslide",
+      "scenario_id": "SC-KEG-HIST",
+      "soft_penalty_edges": 41234
+    },
+    {
+      "hard_blocked_edges": 4,
+      "open_edges": 112555,
+      "scenario_district": "Kegalle",
+      "scenario_hazard_type": "landslide",
+      "scenario_id": "SC-KEG-L1",
+      "soft_penalty_edges": 41232
+    },
+    {
+      "hard_blocked_edges": 10,
+      "open_edges": 112549,
+      "scenario_district": "Kegalle",
+      "scenario_hazard_type": "landslide",
+      "scenario_id": "SC-KEG-L2",
+      "soft_penalty_edges": 41232
+    },
+    {
+      "hard_blocked_edges": 102,
+      "open_edges": 112537,
+      "scenario_district": "Kalutara",
+      "scenario_hazard_type": "flood",
+      "scenario_id": "SC-KLT-F1",
+      "soft_penalty_edges": 41152
+    },
+    {
+      "hard_blocked_edges": 1218,
+      "open_edges": 111914,
+      "scenario_district": "Kalutara",
+      "scenario_hazard_type": "flood",
+      "scenario_id": "SC-KLT-F2",
+      "soft_penalty_edges": 40659
+    },
+    {
+      "hard_blocked_edges": 0,
+      "open_edges": 112557,
+      "scenario_district": "Kalutara",
+      "scenario_hazard_type": "landslide",
+      "scenario_id": "SC-KLT-HIST",
+      "soft_penalty_edges": 41234
+    },
+    {
+      "hard_blocked_edges": 18,
+      "open_edges": 112555,
+      "scenario_district": "Kalutara",
+      "scenario_hazard_type": "landslide",
+      "scenario_id": "SC-KLT-L1",
+      "soft_penalty_edges": 41218
+    },
+    {
+      "hard_blocked_edges": 6,
+      "open_edges": 112557,
+      "scenario_district": "Kalutara",
+      "scenario_hazard_type": "landslide",
+      "scenario_id": "SC-KLT-L2",
+      "soft_penalty_edges": 41228
+    },
+    {
+      "hard_blocked_edges": 0,
+      "open_edges": 112557,
+      "scenario_district": "Nuwara Eliya",
+      "scenario_hazard_type": "landslide",
+      "scenario_id": "SC-NWE-DIT",
+      "soft_penalty_edges": 41234
+    },
+    {
+      "hard_blocked_edges": 181,
+      "open_edges": 112400,
+      "scenario_district": "Nuwara Eliya",
+      "scenario_hazard_type": "flood",
+      "scenario_id": "SC-NWE-F1",
+      "soft_penalty_edges": 41210
+    },
+    {
+      "hard_blocked_edges": 390,
+      "open_edges": 112305,
+      "scenario_district": "Nuwara Eliya",
+      "scenario_hazard_type": "flood",
+      "scenario_id": "SC-NWE-F2",
+      "soft_penalty_edges": 41096
+    },
+    {
+      "hard_blocked_edges": 0,
+      "open_edges": 112557,
+      "scenario_district": "Nuwara Eliya",
+      "scenario_hazard_type": "landslide",
+      "scenario_id": "SC-NWE-HIST",
+      "soft_penalty_edges": 41234
+    },
+    {
+      "hard_blocked_edges": 6,
+      "open_edges": 112553,
+      "scenario_district": "Nuwara Eliya",
+      "scenario_hazard_type": "landslide",
+      "scenario_id": "SC-NWE-L1",
+      "soft_penalty_edges": 41232
+    },
+    {
+      "hard_blocked_edges": 28,
+      "open_edges": 112538,
+      "scenario_district": "Nuwara Eliya",
+      "scenario_hazard_type": "landslide",
+      "scenario_id": "SC-NWE-L2",
+      "soft_penalty_edges": 41225
+    },
+    {
+      "hard_blocked_edges": 84,
+      "open_edges": 112473,
+      "scenario_district": "Ratnapura",
+      "scenario_hazard_type": "flood",
+      "scenario_id": "SC-RTN-F1",
+      "soft_penalty_edges": 41234
+    },
+    {
+      "hard_blocked_edges": 1287,
+      "open_edges": 111323,
+      "scenario_district": "Ratnapura",
+      "scenario_hazard_type": "flood",
+      "scenario_id": "SC-RTN-F2",
+      "soft_penalty_edges": 41181
+    },
+    {
+      "hard_blocked_edges": 0,
+      "open_edges": 112557,
+      "scenario_district": "Ratnapura",
+      "scenario_hazard_type": "landslide",
+      "scenario_id": "SC-RTN-HIST",
+      "soft_penalty_edges": 41234
+    },
+    {
+      "hard_blocked_edges": 0,
+      "open_edges": 112557,
+      "scenario_district": "Ratnapura",
+      "scenario_hazard_type": "landslide",
+      "scenario_id": "SC-RTN-L1",
+      "soft_penalty_edges": 41234
+    },
+    {
+      "hard_blocked_edges": 12,
+      "open_edges": 112555,
+      "scenario_district": "Ratnapura",
+      "scenario_hazard_type": "landslide",
+      "scenario_id": "SC-RTN-L2",
+      "soft_penalty_edges": 41224
+    }
+  ],
+  "schema": "dual_route",
+  "soft_penalty_policy": "LHMP classes 3-4 and incident points snapped to their nearest edge within 50m. Active restricted closures are separately exposed and also receive the soft_penalty tier.",
+  "status_time_basis": "Scenario status is conservative over any part of each scenario's event window, not an as-of-time closure query.",
+  "target_srid": 5234
+}

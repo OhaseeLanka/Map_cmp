@@ -29,6 +29,9 @@ html, body, #root { height: 100%; margin: 0; background: var(--bg); color: var(-
 .map-actions { display: flex; gap: 5px; }
 .map-actions button { padding: 5px 8px; border: 1px solid var(--border); border-radius: 6px; color: var(--muted); background: rgba(255,255,255,.04); cursor: pointer; font: inherit; font-size: 11px; }
 .map-actions button:hover { color: var(--text); border-color: var(--water); }
+.evacuation-action-button { width: 100%; display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 10px 12px; border: 1px solid rgba(53,185,233,.6); border-radius: 10px; background: rgba(53,185,233,.15); color: #dff7ff; cursor: pointer; font: inherit; font-size: 12px; font-weight: 600; }
+.evacuation-action-button:hover { background: rgba(53,185,233,.22); }
+.evacuation-action-button span { font-size: 16px; line-height: 1; }
 .map-toast { position: absolute; z-index: 5; top: 70px; left: 50%; transform: translateX(-50%); padding: 8px 12px; border: 1px solid rgba(110,194,177,.4); border-radius: 8px; background: rgba(20,25,32,.94); color: #d8f1ec; font-size: 12px; }
 .left { position: absolute; z-index: 2; top: 76px; left: 12px; width: 240px; padding: 15px; }
 h3 { margin: 0 0 8px; font-size: 13px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: .05em; }
