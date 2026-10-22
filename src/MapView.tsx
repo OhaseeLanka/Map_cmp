@@ -336,21 +336,23 @@ export default function MapView({ landslide, flood, mode, selectedId, visualizat
     if (flood) (map.getSource("flood") as maplibregl.GeoJSONSource).setData(flood as unknown as GeoJSON.FeatureCollection);
     if (floodPriority) (map.getSource("flood-priority") as maplibregl.GeoJSONSource).setData(floodPriority as unknown as GeoJSON.FeatureCollection);
     const markersVisible = visualization === "markers" || visualization === "emergency";
-    const landslideVisibility = mode === "flood" || !markersVisible ? "none" : "visible";
-    const floodVisibility = mode === "landslide" || !markersVisible ? "none" : "visible";
+    const landslideActive = mode === "landslide" || mode === "both";
+    const floodActive = mode === "flood" || mode === "both";
+    const landslideVisibility = !landslideActive || !markersVisible ? "none" : "visible";
+    const floodVisibility = !floodActive || !markersVisible ? "none" : "visible";
     map.setLayoutProperty("landslide-layer", "visibility", landslideVisibility);
     map.setLayoutProperty("flood-layer", "visibility", floodVisibility);
-    map.setLayoutProperty("flood-priority-fill", "visibility", floodPriority && (mode === "flood" || mode === "both") ? "visible" : "none");
-    map.setLayoutProperty("flood-priority-outline", "visibility", floodPriority && (mode === "flood" || mode === "both") ? "visible" : "none");
+    map.setLayoutProperty("flood-priority-fill", "visibility", floodPriority && floodActive ? "visible" : "none");
+    map.setLayoutProperty("flood-priority-outline", "visibility", floodPriority && floodActive ? "visible" : "none");
     const priorityFilter: maplibregl.FilterSpecification | null = selectedFloodPriorityName
       ? ["==", ["get", "boundary_name"], selectedFloodPriorityName]
       : null;
     map.setFilter("flood-priority-fill", priorityFilter);
     map.setFilter("flood-priority-outline", priorityFilter);
-    map.setLayoutProperty("river-context", "visibility", mode === "landslide" ? "none" : "visible");
+    map.setLayoutProperty("river-context", "visibility", mode === "landslide" || mode === "none" ? "none" : "visible");
     map.setLayoutProperty("landslide-heatmap", "visibility", "none");
     map.setLayoutProperty("flood-heatmap", "visibility", "none");
-    map.setLayoutProperty("contour-layer", "visibility", contours && mode !== "flood" ? "visible" : "none");
+    map.setLayoutProperty("contour-layer", "visibility", contours && mode !== "flood" && mode !== "none" ? "visible" : "none");
     ["roads-casing", "roads-layer", "roads-hit"].forEach((id) => map.setLayoutProperty(id, "visibility", roads ? "visible" : "none"));
     ["population-layer", "population-outline"].forEach((id) => map.setLayoutProperty(id, "visibility", population ? "visible" : "none"));
     map.setTerrain(terrain ? { source: "terrain-dem", exaggeration: 1.35 } : null);

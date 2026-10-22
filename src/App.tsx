@@ -4,6 +4,7 @@ import MapView, { type PopulationDetails, type RoadDetails } from "./MapView";
 import { EvacuationActionButton, type EvacuationActionPayload } from "./EvacuationActionButton";
 import { TIERS, TIER_COLORS } from "./tokens";
 import { parseFloodPriorityCollection, parseRiskCollection } from "./data";
+import { getVisibleHazards } from "./layerMode";
 import type { DataLoadState, FloodPriorityCollection, FloodPriorityProperties, Hazard, LayerMode, RiskCollection, RiskFeature, RiskFilters, RiskProps, VisualizationMode } from "./types";
 import ResearchLandingPage from "./LandingPage";
 
@@ -192,7 +193,7 @@ function MapDashboard() {
   const floodPriority = floodPriorityState.data;
   const populationAreasState = usePopulationAreas();
   const populationAreas = populationAreasState.data;
-  const [mode, setMode] = useState<LayerMode>("both");
+  const [mode, setMode] = useState<LayerMode>("none");
   const [selected, setSelected] = useState<RiskProps | null>(null);
   const [limitsOpen, setLimitsOpen] = useState(true);
   const [language, setLanguage] = useState<"en" | "si" | "ta">("en");
@@ -244,7 +245,7 @@ function MapDashboard() {
     return { type: "FeatureCollection", features };
   }, [floodHistory, floodDate, floodCoordinates, flood]);
 
-  const visible: Hazard[] = mode === "both" ? ["landslide", "flood"] : [mode];
+  const visible: Hazard[] = getVisibleHazards(mode);
   const features = useMemo(
     () => [...(visible.includes("landslide") ? landslide?.features ?? [] : []), ...(visible.includes("flood") ? floodForDate?.features ?? [] : [])]
       .filter((feature) => {
@@ -321,7 +322,7 @@ function MapDashboard() {
       <aside className="left card" aria-label="Map controls">
         <h3>{labels.layers}</h3>
         <div className="switch" role="group" aria-label="Layer">
-          {(["landslide", "flood", "both"] as LayerMode[]).map((layer) => <button key={layer} className={mode === layer ? "on" : ""} aria-pressed={mode === layer} onClick={() => setMode(layer)}>{layer === "landslide" ? "Landslide" : layer === "flood" ? "Flood" : "Both"}</button>)}
+          {(["none", "landslide", "flood", "both"] as LayerMode[]).map((layer) => <button key={layer} className={mode === layer ? "on" : ""} aria-pressed={mode === layer} onClick={() => setMode(layer)}>{layer === "none" ? "Empty" : layer === "landslide" ? "Landslide" : layer === "flood" ? "Flood" : "Both"}</button>)}
         </div>
         <h3>View style</h3>
         <div className="view-switch" role="group" aria-label="Map view style">
@@ -333,7 +334,7 @@ function MapDashboard() {
         </div>
         {visualization === "emergency" && <p className="focus-note"><span className="pulse-dot" /> Showing High and Very High risk only</p>}
         <label className="field">{labels.search}<input type="search" value={filters.query} onChange={(event) => setFilters({ ...filters, query: event.target.value })} placeholder="ID, area, river, hazard" /></label>
-        {mode !== "landslide" && filters.query.trim() && floodPriority && (
+        {mode !== "landslide" && mode !== "none" && filters.query.trim() && floodPriority && (
           <div className="area-search-results" aria-label="Flood area search results">
             {floodPriority.features
               .filter((feature) => `${feature.properties.boundary_name} ${feature.properties.District} ${feature.properties.Division}`.toLowerCase().includes(filters.query.trim().toLowerCase()))
@@ -530,7 +531,7 @@ function MapDashboard() {
         ))}
       </section>
 
-      <section className="summary card" aria-live="polite"><b>{features.length}</b> {labels.records}<span>{mode === "both" ? `${landslide?.features.length ?? 0} landslide · ${flood?.features.length ?? 0} flood` : mode === "flood" ? "Flood monitoring points" : "Landslide locations"}</span></section>
+      <section className="summary card" aria-live="polite"><b>{features.length}</b> {labels.records}<span>{mode === "none" ? "Map is empty — select a layer to display hazards" : mode === "both" ? `${landslide?.features.length ?? 0} landslide · ${flood?.features.length ?? 0} flood` : mode === "flood" ? "Flood monitoring points" : "Landslide locations"}</span></section>
 
       <section className="records card" aria-label="Risk locations">
         <h3>{labels.records}</h3>

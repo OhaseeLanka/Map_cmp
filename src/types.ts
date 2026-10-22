@@ -1,7 +1,7 @@
 import type { Tier } from "./tokens";
 
 export type Hazard = "landslide" | "flood";
-export type LayerMode = Hazard | "both";
+export type LayerMode = Hazard | "both" | "none";
 export type VisualizationMode = "markers" | "heatmap" | "emergency";
 
 export interface RiskProps {
